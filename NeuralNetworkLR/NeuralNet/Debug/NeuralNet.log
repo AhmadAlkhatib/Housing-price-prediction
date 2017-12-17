@@ -1,0 +1,5 @@
+﻿  NeuralNet.cpp
+c:\users\ahmet\documents\visual studio 2017\projects\neuralnet\neuralnet\neuralnet.cpp(126): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\ahmet\documents\visual studio 2017\projects\neuralnet\neuralnet\neuralnet.cpp(208): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+  NeuralNet.vcxproj -> C:\Users\ahmet\Documents\Visual Studio 2017\Projects\NeuralNet\Debug\NeuralNet.exe
+  NeuralNet.vcxproj -> C:\Users\ahmet\Documents\Visual Studio 2017\Projects\NeuralNet\Debug\NeuralNet.pdb (Partial PDB)
