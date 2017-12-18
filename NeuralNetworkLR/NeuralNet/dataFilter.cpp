@@ -13,7 +13,7 @@ DataFilter::DataFilter(DataParser DP, int size) {
 	//cout << "CALLED" << endl;
 	m_size = size;
 	m_radiusInKM = 0.2; // 200 meters
-	m_housesData = DP.sendInput();
+	m_housesData = DP.sendInput(); // get a reference to the block of data
 	//cout << "SENT" << endl;
 	filter();
 }
@@ -27,7 +27,7 @@ void DataFilter::filter() {
 	//cout << "center " << centerIndex << endl;
 	Point center, other;
 
-	center = { // the coordinates of the house it's price will be estimated
+	center = { // the coordinates of the house of which it's price will be estimated
 		stod(m_housesData[centerIndex].longitude),
 		stod(m_housesData[centerIndex].latitude)
 	};
@@ -50,6 +50,8 @@ void DataFilter::filter() {
 
 		if (i == centerIndex - 1) {
 			if (HousesCount < minHousesCount) {
+
+				HousesCount = 0;
 				i = 0;
 				m_radiusInKM += 0.2;
 				pickedHouses.clear();
@@ -58,7 +60,7 @@ void DataFilter::filter() {
 	}
 
 	cout << " COUNT " << HousesCount << endl;
-	pickedHouses.push_back(centerIndex); // push the house it's price will be estimated to the end of the block. the trainer will take this instance as the instance that it's price will be estimated.
+	pickedHouses.push_back(centerIndex); // push the house of which it's price will be estimated to the end of the block. the trainer will take this instance as the instance that it's price will be estimated.
 }
 
 HousesData* DataFilter::sendInput() {
@@ -84,6 +86,7 @@ HousesData* DataFilter::sendInput() {
 }
 
 void DataFilter::printData() { // DEBUG FUNCTION
+
 	ofstream ofile;
 	ofile.open("filtered houses.txt");
 

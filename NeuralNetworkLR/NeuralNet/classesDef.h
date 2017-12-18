@@ -42,7 +42,6 @@ public:
 	vector<string> splitOnDelimiter(char * str, char delim);
 	void printData(int);	
 	void testPrint(string);
-	//void calcLocationScore(int size);
 };
 
 struct Point {
@@ -80,17 +79,19 @@ private:
 
 public:
 	
-	// 3 MEMEBERS WILL BE ENCAPSULATED LATER !!!!!!!!!!!!!!!
+	
 	int m; // number of instances AKA house's count AKA lines 
 	int mMax; // 0->mMax is number of instances that will be taken to train trainer. 
  	          // mMax->m is the data that will be taken to test the trainer.
 	int estimatedHouse; // the index of the house that it's price will be estimated
-	//Perceptron(double LR, DataParser DP, int size); // costructor function will initialize private members
-	
-	Perceptron(double LR, DataFilter DF, int size); // overloaded constructor for convenience
-	void GDupdateWeights(); // gradient descent
+	//Perceptron(double LR, DataParser DP, int size);
+
+	Perceptron(double LR, DataFilter DF, int size);
+	void GDupdateWeights(); // gradient descent to update weight values
 	int y(int index); // returns price for the current instance
 	double h(int index); // hypothesis function will calculate an estimation of the price for the current instance
 	void printData();
 	int Test(int i);
+	bool lastCheck(int i);
+	void printWeights();
 };

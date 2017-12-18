@@ -1,10 +1,11 @@
-﻿  NeuralNet.cpp
-NeuralNet.cpp(61): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
-NeuralNet.cpp(210): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-     Creating library C:\Users\ahmet\Documents\Visual Studio 2017\Projects\NeuralNet\Release\NeuralNet.lib and object C:\Users\ahmet\Documents\Visual Studio 2017\Projects\NeuralNet\Release\NeuralNet.exp
+﻿  dataFilter.cpp
+dataFilter.cpp(15): warning C4305: '=': truncation from 'double' to 'float'
+dataFilter.cpp(56): warning C4305: '+=': truncation from 'double' to 'float'
+  dataParser.cpp
+     Creating library C:\Users\ahmet\Documents\Visual Studio 2017\Projects\NeuralNet\Housing-price-prediction\NeuralNetworkLR\Release\NeuralNet.lib and object C:\Users\ahmet\Documents\Visual Studio 2017\Projects\NeuralNet\Housing-price-prediction\NeuralNetworkLR\Release\NeuralNet.exp
   Generating code
-  4 of 416 functions ( 1.0%) were compiled, the rest were copied from previous compilation.
+  3 of 418 functions ( 0.7%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    18 functions had inline decision re-evaluated but remain unchanged
+    4 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  NeuralNet.vcxproj -> C:\Users\ahmet\Documents\Visual Studio 2017\Projects\NeuralNet\Release\NeuralNet.dll
+  NeuralNet.vcxproj -> C:\Users\ahmet\Documents\Visual Studio 2017\Projects\NeuralNet\Housing-price-prediction\NeuralNetworkLR\Release\NeuralNet.dll

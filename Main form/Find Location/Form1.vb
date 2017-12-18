@@ -1,7 +1,6 @@
 ﻿'In order to make our project use the new components, we'll need to create a reference to downloaded DLL files
 'Project - > Add Reference - > Browse 
 'To add GMap.Net to Toolbox,  ToolBox - > Right Click - > Choose Items
-
 Imports GMap.NET
 Imports GMap.NET.WindowsForms
 Imports GMap.NET.WindowsForms.Markers
@@ -11,6 +10,7 @@ Public Class ENGForm
 
 	Dim mySqlHandler As New MySqlHandler
 	Dim lat, lng As Double
+
 	Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		lbMessage.Visible = False
 
@@ -18,14 +18,14 @@ Public Class ENGForm
 
 	Private Sub GMapControl1_Load(sender As Object, e As EventArgs) Handles GMapControl1.Load
 
-        'define map provider
-        GMapControl1.MapProvider = MapProviders.GoogleMapProvider.Instance
-        GMaps.Instance.Mode = AccessMode.ServerOnly
-        GMapControl1.SetPositionByKeywords("Turkey")
+		'define map provider
+		GMapControl1.MapProvider = MapProviders.GoogleMapProvider.Instance
+		GMaps.Instance.Mode = AccessMode.ServerOnly
+		GMapControl1.SetPositionByKeywords("Turkey")
 
-        'map properties
-        GMapControl1.ShowCenter = False
-        GMapControl1.CanDragMap = True
+		'map properties
+		GMapControl1.ShowCenter = False
+		GMapControl1.CanDragMap = True
 
 		GMapControl1.EmptyTileText = "No Internet Connection."
 
@@ -33,7 +33,7 @@ Public Class ENGForm
 		GMapControl1.EmptyTileColor = Color.Red
 	End Sub
 
-    Private Sub GMapControl1_MouseClick(sender As Object, e As MouseEventArgs) Handles GMapControl1.MouseClick
+	Private Sub GMapControl1_MouseClick(sender As Object, e As MouseEventArgs) Handles GMapControl1.MouseClick
 
 		If CityComboBox.SelectedIndex = -1 Then
 			Dim str As String = "Please select a city first"
@@ -49,17 +49,17 @@ Public Class ENGForm
 		If e.Button = MouseButtons.Left Then
 
 			lat = GMapControl1.FromLocalToLatLng(e.X, e.Y).Lat
-            lng = GMapControl1.FromLocalToLatLng(e.X, e.Y).Lng
+			lng = GMapControl1.FromLocalToLatLng(e.X, e.Y).Lng
 
 			GMapControl1.Overlays.Clear() 'clear previous markers
 			Dim marker As New GMarkerGoogle(New PointLatLng(lat, lng), GMarkerGoogleType.green_small)
-            GMapControl1.Overlays.Add(markers)
+			GMapControl1.Overlays.Add(markers)
 			markers.Markers.Add(marker)
 		End If
 
-        'Getting the string of address
-        Dim place As List(Of Placemark)
-        Dim check As GeoCoderStatusCode = GMapProviders.GoogleMap.GetPlacemarks(New PointLatLng(lat, lng), place)
+		'Getting the string of address
+		Dim place As List(Of Placemark)
+		Dim check As GeoCoderStatusCode = GMapProviders.GoogleMap.GetPlacemarks(New PointLatLng(lat, lng), place)
 		If check = GeoCoderStatusCode.G_GEO_SUCCESS Then
 			For Each p1 As Placemark In place
 				lbLocation.Text = p1.Address
@@ -72,7 +72,6 @@ Public Class ENGForm
 		End If
 		lbMessage.Text = message
 	End Sub
-
 
 	Private Sub btnPredict_Click(sender As Object, e As EventArgs) Handles btnPredict.Click
 
@@ -99,8 +98,10 @@ Public Class ENGForm
 		story = cbFloor.SelectedItem.ToString
 
 		query = mySqlHandler.formQuery(city, location, size)
-		centerHouse = location & "q" & size & "q" & rooms & "q" & age & "q" & story & "q" & lng & "q" & lat & "q170.000 TL"
+		MsgBox(query)                                                                       '----------'
+		centerHouse = location & "q" & size & "q" & rooms & "q" & age & "q" & story & "q" & "999.999 TL" & "q" & lng & "q" & lat
 
+		MsgBox(centerHouse)
 		estimatedPrice = mySqlHandler.issueQuery(query, centerHouse)
 
 		lblPrice.Text = estimatedPrice
@@ -119,47 +120,44 @@ Public Class ENGForm
 		TxtBoxSize.Text = MacTrackBar1.Value.ToString
 	End Sub
 
-    'exit window
-    Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
-        Application.Exit()
-    End Sub
+	Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
+		Application.Exit()
+	End Sub
 
-    'minimize window
-    Private Sub btnMinimize_Click(sender As Object, e As EventArgs) Handles btnMinimize.Click
-        Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
-    End Sub
+	Private Sub btnMinimize_Click(sender As Object, e As EventArgs) Handles btnMinimize.Click
+		Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
+	End Sub
 
-    'maximize window
-    Private Sub btnMaximize_Click(sender As Object, e As EventArgs) Handles btnMaximize.Click
+	Private Sub btnMaximize_Click(sender As Object, e As EventArgs) Handles btnMaximize.Click
 
-        If Me.WindowState = System.Windows.Forms.FormWindowState.Maximized Then
-            Me.WindowState = System.Windows.Forms.FormWindowState.Normal
-        Else
-            Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
-        End If
-
-
-    End Sub
-
-    Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
-        'slidePanel plaecement
-        slidePanel.Height = btnHome.Height
-        slidePanel.Top = btnHome.Top
+		If Me.WindowState = System.Windows.Forms.FormWindowState.Maximized Then
+			Me.WindowState = System.Windows.Forms.FormWindowState.Normal
+		Else
+			Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
+		End If
 
 
 	End Sub
 
-    Private Sub btnHistory_Click(sender As Object, e As EventArgs) Handles btnHistory.Click
+	Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
+		'slidePanel plaecement
+		slidePanel.Height = btnHome.Height
+		slidePanel.Top = btnHome.Top
+
+
+	End Sub
+
+	Private Sub btnHistory_Click(sender As Object, e As EventArgs) Handles btnHistory.Click
 
 		slidePanel.Height = btnHistory.Height
-        slidePanel.Top = btnHistory.Top
+		slidePanel.Top = btnHistory.Top
 
 	End Sub
 
-    Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
+	Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
 
 		slidePanel.Height = btnAbout.Height
-        slidePanel.Top = btnAbout.Top
+		slidePanel.Top = btnAbout.Top
 
 	End Sub
 
@@ -184,6 +182,7 @@ Public Class ENGForm
 		lbSelectCity.Text = "Lütfen bir şehir seçiniz:"
 		lbMessage.Text = "Şimdi bir noktayi seçiniz ve sizin için adresi elde edeceğiz:"
 	End Sub
+
 	Private Sub btnEng_Click(sender As Object, e As EventArgs) Handles btnEng.Click
 
 		btnHome.Text = "Home"
@@ -198,40 +197,44 @@ Public Class ENGForm
 
 
 	End Sub
-	'set position on the map by selected city
+
 	Private Sub CityComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CityComboBox.SelectedIndexChanged
-        If CityComboBox.SelectedIndex = 0 Then
-            GMapControl1.SetPositionByKeywords("Istanbul" & "Turkey")
-            GMapControl1.Zoom = 9
-        End If
+		If CityComboBox.SelectedIndex = 0 Then
+			GMapControl1.SetPositionByKeywords("Istanbul" & "Turkey")
+			GMapControl1.Zoom = 9
+		End If
 
-        If CityComboBox.SelectedIndex = 1 Then
-            GMapControl1.SetPositionByKeywords("Edirne" & "Turkey")
-            GMapControl1.Zoom = 9
-        End If
+		If CityComboBox.SelectedIndex = 1 Then
+			GMapControl1.SetPositionByKeywords("Edirne" & "Turkey")
+			GMapControl1.Zoom = 9
+		End If
 
-        If CityComboBox.SelectedIndex = 2 Then
-            GMapControl1.SetPositionByKeywords("Bursa" & "Turkey")
-            GMapControl1.Zoom = 9
-        End If
+		If CityComboBox.SelectedIndex = 2 Then
+			GMapControl1.SetPositionByKeywords("Bursa" & "Turkey")
+			GMapControl1.Zoom = 9
+		End If
 
-        If CityComboBox.SelectedIndex = 3 Then
-            GMapControl1.SetPositionByKeywords("Ankara" & "Turkey")
-            GMapControl1.Zoom = 9
-        End If
+		If CityComboBox.SelectedIndex = 3 Then
+			GMapControl1.SetPositionByKeywords("Ankara" & "Turkey")
+			GMapControl1.Zoom = 9
+		End If
 
-        If CityComboBox.SelectedIndex = 4 Then
-            GMapControl1.SetPositionByKeywords("Izmir" & "Turkey")
-            GMapControl1.Zoom = 10
-        End If
+		If CityComboBox.SelectedIndex = 4 Then
+			GMapControl1.SetPositionByKeywords("Izmir" & "Turkey")
+			GMapControl1.Zoom = 10
+		End If
 
-        lbMessage.Visible = True
-        lbSelectCity.Hide()
-        CityComboBox.Hide()
+		lbMessage.Visible = True
+		lbSelectCity.Hide()
+		CityComboBox.Hide()
 
-    End Sub
+	End Sub
 
 	Private Sub TxtBoxSize_TextChanged(sender As Object, e As EventArgs) Handles TxtBoxSize.TextChanged
-		MacTrackBar1.Value = TxtBoxSize.Text
+
+		If IsNumeric(TxtBoxSize.Text) Then
+			MacTrackBar1.Value = TxtBoxSize.Text
+		End If
+
 	End Sub
 End Class

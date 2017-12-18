@@ -23,8 +23,6 @@ Public Class MySqlHandler
 			Dim price As String
 			Dim line As String
 
-			Dim temp As String = ""
-
 			connect()
 			cmd.CommandText = query
 			rd = cmd.ExecuteReader()
@@ -32,12 +30,10 @@ Public Class MySqlHandler
 			While rd.Read
 
 				line = rd("price")
-				price = line.Remove(line.Length - 1, 1) ' get rid of line reset character 
+				price = line.Remove(line.Length - 1, 1) ' get rid of line reset character
 
-				temp = rd("location") & "q" & rd("size") & "q" & rd("rooms") & "q" & rd("age") & "q" & rd("story") & "q" & price & "q" & rd("longitude") & "q" & rd("latitude") & "w"
-				MsgBox(temp)
-				toSend &= temp
-
+				' order of features: location-size-rooms-age-story-price-long-lat.
+				toSend &= rd("location") & "q" & rd("size") & "q" & rd("rooms") & "q" & rd("age") & "q" & rd("story") & "q" & price & "q" & rd("longitude") & "q" & rd("latitude") & "w"
 				size += 1
 
 			End While
@@ -62,7 +58,7 @@ Public Class MySqlHandler
 
 		Dim query As New StringBuilder
 
-		query.Append("SELECT * FROM ")
+		query.Append("SELECT DISTINCT * FROM ")
 		query.Append(parse(table) & "1")
 		query.Append(" WHERE Location LIKE ")
 		query.Append("'%" & parse(location) & "%' ")

@@ -150,10 +150,10 @@ void DataParser::parseStory(string *story, int size) {
 			story[i] = "1";
 		else if (story[i] == "Zemin Kat" || story[i] == "Giris Kati")
 			story[i] = "0";
-		else if (story[i] == "Bahçe Kati")
-			story[i] = "-1000";
+		else if (story[i] == "Bahçe Kati" || story[i] == "Bodrum Kati")
+			story[i] = "-1";
 		else if (story[i][0] == 'K')
-			story[i] = story[i][story[i].length() - 1];// Kat5
+			story[i] = story[i][story[i].length() - 1];
 		else {
 			string temp = "";
 			int j = 0;
@@ -191,7 +191,7 @@ void DataParser::parsePrice(string * price, int size) {
 			ptr++;
 		}
 		if (convert) {
-			temp = to_string((int)(stoi(temp)*3.91));
+			temp = to_string((int)(stoi(temp)*3.81));
 		}
 
 		price[i] = temp;
@@ -258,88 +258,3 @@ void DataParser::testPrint(string str) {
 	ofile.close();
 }
 
-/*
-void DataParser::calcLocationScore(int size) {
-
-//testPrint("calcLocationScore");
-// temp table to store location with the corresponding price and sort it
-// dont want to mess with m_housesData
-struct locPriceTable {
-string location;
-string price;
-} *locPrice;
-locPrice = new locPriceTable[size];
-
-// temp table to store location with the corresponding score
-struct locScoreTable {
-string location;
-double score;
-} *locScore;
-
-//fill locPrice from m_housesData
-for (int i = 0; i < size; i++) {
-locPrice[i].location = m_housesData[i].location;
-locPrice[i].price = m_housesData[i].price;
-
-cout << "from locPrice  |  " << locPrice[i].price << endl;
-}
-
-//sort locPrice to group the locations
-for (int i = 0;i < size;i++) {
-for (int k = 0;k < size - i - 1;k++) {
-if (locPrice[k].location > locPrice[k + 1].location) {
-locPriceTable temp = locPrice[k];
-locPrice[k] = locPrice[k + 1];
-locPrice[k + 1] = temp;
-}
-}
-}
-
-long sum = 0;
-int distinctLocCount = 0;
-
-//calculate mean price to be a threshold which will be used when calculating score
-//calculate distinct location count to allocate memory for locScoreTable
-//note that locPrice is sorted
-for (int i = 0;i < size;i++) {
-sum += stoi(locPrice[i].price);
-if (locPrice[i].location != locPrice[i + 1].location)
-distinctLocCount++;
-}
-cout << " SUM IS   |  " << sum << endl;
-double threshold = sum / size;
-cout << "threshold is   |   " << threshold << endl;
-sum = 0;
-
-locScore = new locScoreTable[distinctLocCount];
-int k = 0; // locScore index
-
-for (int i = 0;i < size;i++) {
-
-//calcuate price sum for each grouped location
-//note that sum will be reset to 0 on the end of a grouped location
-sum += stoi(locPrice[i].price);
-
-//end of a grouped locations
-if (locPrice[i].location != locPrice[i + 1].location) {
-
-//fill locScore
-locScore[k].location = locPrice[i].location;
-locScore[k].score = sum / threshold;
-
-sum = 0; //reset for the next iterations
-k++;
-}
-}
-//fill m_housesData score
-for (int i = 0;i < size;i++) {
-//look up the location in locScore table
-for (int k = 0;k < distinctLocCount;k++) {
-if (m_housesData[i].location == locScore[k].location) {
-m_housesData[i].locationScore = locScore[k].score;
-break;
-}
-}
-}
-}
-*/

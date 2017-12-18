@@ -58,12 +58,18 @@ API_DLL int estimatePrice(char* str, int size) {
 	//ofile << "AVERAGE ERROR : " << sum << endl;
 	//ofile << trainer.Test(trainer.estimatedHouse) << endl;
 	//ofile.close();
-	return trainer.h(trainer.estimatedHouse);
+	int price = trainer.h(trainer.estimatedHouse);
+	if (trainer.lastCheck(trainer.estimatedHouse)) {
+		price *= 0.6;
+	}
+
+	trainer.printWeights();
+	return price;
 }
 
 int main()
 {
-	
+	// Fill up str and size to test. Make sure size = # of lines, AKA # of 'w' charecters + 1
 	char *str = " ";
 	int size = 0;
 	
@@ -123,9 +129,9 @@ Perceptron::Perceptron(double LR, DataFilter DF, int size) {
 	m_housesData = DF.sendInput();
 	m_NumOfFeatures = 4 + 1; //4 features + 1 bias input
 
-	m = size ; 
-	estimatedHouse = m - 1; // the house that it's price will be estimated relies at the end of the sent struct
-	mMax = m - 1; // split data to 70% training data and 30% test data
+	m = size; 
+	estimatedHouse = m - 1; // the house of which it's price will be estimated is placed at the end of the sent struct block of data
+	mMax = m - 1; 
 }
 
 void Perceptron::initializeWeights() {
@@ -138,7 +144,7 @@ void Perceptron::initializeWeights() {
 
 double Perceptron::h(int i /* current instance of inputs */) {
 
-	cout <<"H "<< i << endl;
+	//cout <<"H "<< i << endl; //DEBUG
 	return m_weights[0] +
 		m_weights[1] * stoi(m_housesData[i].size) +
 		m_weights[2] * stoi(m_housesData[i].rooms) +
@@ -167,11 +173,11 @@ void Perceptron::GDupdateWeights() {
 	//cout << "prev weight = " << endl;
 	for (int i = 0;i < m_NumOfFeatures; i++) {
 		m_temp[i] = m_weights[i] - (m_learningRate / mMax)* calculateCost(i);
-		cout << "adjusting  " << calculateCost(i)/mMax * m_learningRate << endl;
+		//cout << "Adjusting  " << calculateCost(i)/mMax * m_learningRate << endl;
 	}
 	for (int i = 0;i < m_NumOfFeatures;i++)  {
 		m_weights[i] = m_temp[i];
-		cout << "current weight[" << i << "] = " << m_weights[i] << endl;
+		//cout << "current weight[" << i << "] = " << m_weights[i] << endl;
 	}
 	
 }
@@ -189,7 +195,7 @@ int Perceptron::chooseFeatureOnIndex(int index, int NumOfFeature) {
 	case 4:
 		return stoi(m_housesData[index].story);
 	default:
-		return 1; // if non of the above then the chosen feature is 0 AKA bias value AKA m_wights[0]
+		return 1; // if none of the above then the chosen feature is the 0th, AKA bias value, AKA m_wights[0] of which the multipland shall be = 1
 	}
 }
 
@@ -202,11 +208,21 @@ void Perceptron::printData() {
 int Perceptron::Test(int i) {
 
 	float error = 100 - ((float)h(i) / (float)y(i) * 100);
-
 	ofstream ofile;
-	ofile.open("estimations.txt", ios::app); //APPEND	
+	ofile.open("estimations.txt", ios::app);
 	ofile << "Estimation = " << h(i) << " | Original price = " << y(i) << " OFF BY : "<< error << endl;
 	ofile.close();
 	return error;
 	
+}
+
+bool Perceptron::lastCheck(int i) {
+	return m_housesData[i].story  == "-1";
+
+}
+
+void Perceptron::printWeights() {
+
+	cout << m_weights[0] << " " << m_weights[1] << " " << m_weights[2] << " " << m_weights[3] << " " << m_weights[4] << endl;
+
 }
